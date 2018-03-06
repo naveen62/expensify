@@ -2,7 +2,6 @@ import React from 'react';
 import ExpenseForm from './ExpenseForm';
 import {connect} from   'react-redux';
 import { addExpense } from "../actions/expense";
-import {NavLink} from 'react-router-dom';
 
 export class AddExpense extends React.Component {
     onSubmit = (expense) => {
