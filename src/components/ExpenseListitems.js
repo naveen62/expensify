@@ -1,8 +1,7 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {removeExpense} from '../actions/expense';
-import ExpenseList from './ExpenseList';
 import { NavLink } from 'react-router-dom';
+import moment from 'moment'
+import numeral from 'numeral'
 
 // const ExpenseListitems = ({description, amount, createdAt}) => (
 //     <div>
@@ -21,10 +20,10 @@ class ExpenseListitems extends React.Component {
             <NavLink to={`/edit/${this.props.id}`} exact={true}>
                 <h1>{this.props.description}</h1>
             </NavLink>
-                <p>{this.props.amount} - {this.props.createdAt}</p>
+                <p>{numeral(this.props.amount / 100).format('$0,0.00')} - {moment(this.props.createdAt).format('MMMM Do, YYYY')}</p>
             </div>
         )
     }
 }
 export {ExpenseListitems};
-export default connect()(ExpenseListitems)
+export default ExpenseListitems
