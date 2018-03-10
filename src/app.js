@@ -16,6 +16,7 @@ import {addExpense} from './actions/expense';
 import {removeExpense} from './actions/expense'
 import {setTextFilter} from './actions/filter';
 import getVisibility from './selectors/expenses';
+import './firebase/firebase'
 
 const store = configStore();
 
