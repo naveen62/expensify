@@ -40,9 +40,22 @@ const editExpense = (id, updates) => {
         updates
     }
 }
+const setExpenses = (expenses) => ({
+    type: 'SET_EXPENSES',
+    expenses
+})
+
+const startSetExpenses = () => {
+    return (dispatch) => {
+        const expensesData = []
+       return db.ref('expenses').once('value')
+    }
+}
 export {
     addExpense,
     removeExpense,
     editExpense,
-    startAddExpense
+    startAddExpense,
+    setExpenses,
+    startSetExpenses
 }

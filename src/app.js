@@ -12,7 +12,7 @@ import configStore from './store/configStore';
 import AppRouter from './routes/AppRouter';
 
 // actions
-import {addExpense} from './actions/expense';
+import {startSetExpenses, setExpenses} from './actions/expense';
 import {removeExpense} from './actions/expense'
 import {setTextFilter} from './actions/filter';
 import getVisibility from './selectors/expenses';
@@ -26,6 +26,17 @@ const jsx = (
         <AppRouter />
     </Provider>
 )
+ReactDOM.render(<p>Loading...</p>, document.querySelector('#app'))
 
-ReactDOM.render(jsx, document.querySelector('#app'))
+store.dispatch(startSetExpenses()).then((snapshot) => {
+    const expensesData = []
+    snapshot.forEach((expense) => {
+        expensesData.push({
+            id: expense.key,
+            ...expense.val()
+        })
+    })
+    store.dispatch(setExpenses(expensesData));
+    ReactDOM.render(jsx, document.querySelector('#app'))
+})
 
