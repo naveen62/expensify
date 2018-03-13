@@ -2,8 +2,12 @@ import React from 'react';
 import {shallow} from 'enzyme';
 import {EditExpense} from '../../components/EditExpense';
 import expenses from '../fixtures/expenses';
+import thunk from 'redux-thunk';
+import configMock from 'redux-mock-store';
+import {removeExpense} from '../../actions/expense'
+const createMock = configMock([thunk])
 
-let editExpense, removeExpense, history, wrapper, match;
+let editExpense, history, wrapper, match;
 beforeEach(() => {
     editExpense = jest.fn();
     removeExpense = jest.fn();
@@ -24,5 +28,12 @@ test('should handle editExpense', () => {
 test('should handle removeExpense', () => {
     wrapper.find('button').simulate('click');
     expect(removeExpense).toHaveBeenCalledWith(match.params.id);
-    expect(history.push).toHaveBeenCalledWith('/');    
 })
+// test('should remove expenses from firebase', (done) => {
+//     const store = createMock({});
+//     store.dispatch(removeExpense(expenses[0].id)).then(() => {
+//         const actions = store.getActions();
+//         expect()
+//     })
+
+// })

@@ -9,14 +9,14 @@ import 'react-dates/lib/css/_datepicker.css';
 
 import configStore from './store/configStore';
 
-import AppRouter from './routes/AppRouter';
+import AppRouter, {history} from './routes/AppRouter';
 
 // actions
 import {startSetExpenses, setExpenses} from './actions/expense';
 import {removeExpense} from './actions/expense'
-import {setTextFilter} from './actions/filter';
+import {login, logout} from './actions/auth';
 import getVisibility from './selectors/expenses';
-import './firebase/firebase'
+import {firebase} from './firebase/firebase'
 
 const store = configStore();
 
@@ -26,17 +26,36 @@ const jsx = (
         <AppRouter />
     </Provider>
 )
+let hasRendered = false
+const renderApp = () => {
+    if(!hasRendered) {
+        ReactDOM.render(jsx, document.querySelector('#app'))
+        hasRendered = true
+    }
+}
 ReactDOM.render(<p>Loading...</p>, document.querySelector('#app'))
 
-store.dispatch(startSetExpenses()).then((snapshot) => {
-    const expensesData = []
-    snapshot.forEach((expense) => {
-        expensesData.push({
-            id: expense.key,
-            ...expense.val()
-        })
-    })
-    store.dispatch(setExpenses(expensesData));
-    ReactDOM.render(jsx, document.querySelector('#app'))
-})
 
+firebase.auth().onAuthStateChanged((user) => {
+    if(user) {
+        store.dispatch(login(user.uid))
+        store.dispatch(startSetExpenses()).then((snapshot) => {
+            const expensesData = []
+            snapshot.forEach((expense) => {
+                expensesData.push({
+                    id: expense.key,
+                    ...expense.val()
+                })
+            })
+            store.dispatch(setExpenses(expensesData));
+            renderApp()
+            if(history.location.pathname == '/') {
+                history.push('/dashboard');
+            }
+        })
+    } else {
+        store.dispatch(logout())
+        renderApp()
+        history.push('/')
+    }
+})
