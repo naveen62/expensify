@@ -16,7 +16,8 @@ import {startSetExpenses, setExpenses} from './actions/expense';
 import {removeExpense} from './actions/expense'
 import {login, logout} from './actions/auth';
 import getVisibility from './selectors/expenses';
-import {firebase} from './firebase/firebase'
+import {firebase} from './firebase/firebase';
+import LoadingPage from './components/LoadingPage';
 
 const store = configStore();
 
@@ -33,7 +34,7 @@ const renderApp = () => {
         hasRendered = true
     }
 }
-ReactDOM.render(<p>Loading...</p>, document.querySelector('#app'))
+ReactDOM.render(<LoadingPage />, document.querySelector('#app'))
 
 
 firebase.auth().onAuthStateChanged((user) => {
